@@ -1,8 +1,6 @@
 import sqlite3
 import pickle
-import bcrypt
 from auth import hash_password
-from datetime import datetime
 from contextlib import contextmanager
 
 DATABASE_PATH = "calendar.db"

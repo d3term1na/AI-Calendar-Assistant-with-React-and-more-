@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+requests
+pyjwt
+passlib
+pwdlib
+pydantic
+pydantic-settings
+python-multipart
+sentence-transformers==2.2.2
+numpy
+scipy

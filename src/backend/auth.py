@@ -1,7 +1,5 @@
 from datetime import UTC, datetime, timedelta
-
 from fastapi import HTTPException
-
 import jwt
 from fastapi.security import OAuth2PasswordBearer
 from pwdlib import PasswordHash

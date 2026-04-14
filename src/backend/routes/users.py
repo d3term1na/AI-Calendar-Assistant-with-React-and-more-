@@ -1,10 +1,8 @@
-from datetime import timedelta
 from fastapi.security import OAuth2PasswordRequestForm
-from sqlalchemy import func, select
 from fastapi import APIRouter, HTTPException, Response, Request, Depends
 from pydantic import BaseModel
-import database
 
+import database
 from auth import (
     create_access_token, 
     create_refresh_token,
@@ -14,7 +12,6 @@ from auth import (
     verify_refresh_token,
     verify_password,
 )
-
 from config import settings
 
 
