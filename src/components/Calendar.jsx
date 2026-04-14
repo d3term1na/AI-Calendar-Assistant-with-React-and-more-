@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from 'react'
 const Calendar = ({ events, fetchEvents }) => {
     const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
     const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+    const [hoveredId, setHoveredId] = useState("")
     const monthNames = [
         "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
@@ -17,32 +18,6 @@ const Calendar = ({ events, fetchEvents }) => {
     const todayKey = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
 
     const days = [];
-
-    // const authFetch = useAuthFetch();
-
-    // const fetchEvents = useCallback(async () => {
-    //     try {
-    //         const res = await authFetch("/events");
-    //         console.log("URL response:", res.url);
-
-    //         if (!res.ok) return;
-
-    //         const data = await res.json();
-
-    //         const grouped = {};
-
-    //         (data.events || []).forEach(event => {
-    //             const dateKey = event.start_time.split(" ")[0];
-
-    //             if (!grouped[dateKey]) grouped[dateKey] = [];
-    //             grouped[dateKey].push(event);
-    //         });
-
-    //         setEvents(grouped);
-    //     } catch (err) {
-    //         console.error("Error loading events:", err);
-    //     }
-    // }, [authFetch]);
 
     useEffect(() => {
         fetchEvents();
@@ -80,11 +55,27 @@ const Calendar = ({ events, fetchEvents }) => {
                 <div className="day-number">{day}</div>
 
                 <div className="day-events">
-                    {sortedEvents.map((e, i) => {
-                        const time = e.start_time.split(" ")[1]?.substring(0, 5) || "";
+                    {sortedEvents.map((e) => {
+                        const start_time = e.start_time.split(" ")[1]?.substring(0, 5) || "";
+                        const end_time = e.end_time.split(" ")[1]?.substring(0, 5) || "";
                         return (
-                            <div key={i} className="event-item" title={e.title}>
-                                {time} {e.title}
+                            <div 
+                                key={e.event_id} 
+                                className="event-item" 
+                                title={e.title}
+                                onMouseEnter={() => setHoveredId(e.event_id)}
+                                onMouseLeave={() => setHoveredId(null)}
+                            >
+                                {start_time} {e.title}
+                                {hoveredId === e.event_id && (
+                                    <div className="event-popup">
+                                        <strong>{e.title}</strong>
+                                        <div>{`${start_time} - ${end_time}`}</div>
+                                        <div>{e.participants.join(', ')}</div>
+                                        <br/>
+                                        <div>{e.notes || "No details"}</div>
+                                    </div>
+                                )}
                             </div>
                         );
                     })}
